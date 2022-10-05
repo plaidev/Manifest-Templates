@@ -4,10 +4,10 @@ providers:
     properties:
       projectId: '60b4afa6b6b8a30026965b70'
       accessToken: '${{ secret.KARTE_ACCESS_TOKEN }}'
-	aws:
-		properties:
-			awsAccountId: '123456789012'
-			roleName: 'KarteLegoRole'
+  aws:
+    properties:
+      awsAccountId: '123456789012'
+      roleName: 'KarteLegoRole'
 
 resources:
   my_campaign:
@@ -19,14 +19,14 @@ resources:
       actions:
         - templateId: '60d1a51a5629b90025aa6679'
           desc: 'this is desc'
-					assign_rate: 90
-			segments:
+          assign_rate: 90
+      segments:
         - '60656e48271f100026a67e70'
       segments_details:
         - logic_gate: '$and'
           segment_set:
             - '60656e48271f100026a67e70'
-			trigger_v2:
+      trigger_v2:
         - - is_regex: false
             event_name: view
             field: access.uri.path
@@ -37,11 +37,11 @@ resources:
             useRegex: false
 
 plugins:
-	my_sam:
-	  provider: 'aws'
-		type: 'sam'
-		properties:
-		  region: 'us-east-1'
+  my_sam:
+    provider: 'aws'
+    type: 'sam'
+    properties:
+      region: 'us-east-1'
       stackName: 'example-stack'
       s3Bucket: 'example-bucket'
       capabilities:
