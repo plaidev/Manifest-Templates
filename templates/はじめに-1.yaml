@@ -1,0 +1,61 @@
+name: sample
+providers:
+  karte:
+    properties:
+      projectId: '60b4afa6b6b8a30026965b70'
+      accessToken: '${{ secret.KARTE_ACCESS_TOKEN }}'
+	aws:
+		properties:
+			awsAccountId: '123456789012'
+			roleName: 'KarteLegoRole'
+
+resources:
+  my_campaign:
+    provider: 'karte'
+    type: 'campaign'
+    properties:
+      title: 'testtitle'
+      enabled: true
+      actions:
+        - templateId: '60d1a51a5629b90025aa6679'
+          desc: 'this is desc'
+					assign_rate: 90
+			segments:
+        - '60656e48271f100026a67e70'
+      segments_details:
+        - logic_gate: '$and'
+          segment_set:
+            - '60656e48271f100026a67e70'
+			trigger_v2:
+        - - is_regex: false
+            event_name: view
+            field: access.uri.path
+            key: null
+            compare: $eq
+            value: /path
+            match_type: exact
+            useRegex: false
+
+plugins:
+	my_sam:
+	  provider: 'aws'
+		type: 'sam'
+		properties:
+		  region: 'us-east-1'
+      stackName: 'example-stack'
+      s3Bucket: 'example-bucket'
+      capabilities:
+        - CAPABILITY_IAM
+        - CAPABILITY_NAMED_IAM
+        - CAPABILITY_AUTO_EXPAND
+      name: 'ExampleKarteAmazonConnectSolution'
+      location:
+        applicationId: 'arn:aws:serverlessrepo:us-east-1:935513695944:applications/Amazon-EventBridge-Integration-Solution-KARTE-User-State-Driven-Call'
+        semanticVersion: '0.1.0'
+      parameters:
+        EventSourceName: 'aws.partner/karte.io.test/935513695944/5f563e7af5fc550024278006/partner-event-source'
+        ConnectRegion: 'us-east-1'
+        ConnectContactFlowId: 'flow-id' # Amazon Connect Contact Flow Id
+        ConnectInstanceId: 'instance-id' # Amazon Connect Instance Id
+        ConnectSourcePhoneNumber: '1234567890' # Amazon Connect Source Phone number
+        SNSTopicName: 'topic-name' # SNS Topic Name
